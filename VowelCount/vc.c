@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 const char vowels[] = "aeiou";
-const int numPossibleVowels = sizeof(vowels) / sizeof(vowels[0]);	// length of the vowels[] array AKA the number of possible vowels (5 in this case: aeiou)
+const int arrLength = sizeof(vowels) / sizeof(vowels[0]);	// length of the vowels[] array AKA the number of possible vowels (5 in this case: aeiou)
 int globalLen;
 
 /**
@@ -43,7 +43,7 @@ void countVowels() {
 
 		// Compare every char to the vowels[] array and increment vowelCount for every vowel found
 		for(int i = 0; i < len; i++) {
-			for(int k = 0; k < numPossibleVowels; k++) {
+			for(int k = 0; k < arrLength; k++) {
 				if(line[i] == vowels[k]) { vowelCount++; }
 			}
 		}
