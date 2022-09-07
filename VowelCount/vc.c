@@ -1,49 +1,53 @@
-// standard int size on this machine is 4 bytes
-
 #include <stdio.h>
 
 const char vowels[] = "aeiou";
-const int arrLength = sizeof(vowels) / sizeof(vowels[0]);	// length of the vowels[] array AKA the number of possible vowels (5 in this case: aeiou
+const int vowelsArrayLength = sizeof(vowels) / sizeof(vowels[0]);	// length of the vowels[] array AKA the number of possible vowels (5 in this case: aeiou
 
-///**
-// * Take the user's input and make every char lower case
-// *
-// * @param *array a pointer to the first element of a char array
-// * @return void
-// */
-//char* toLower(char *array, int inputLength) {
-//	for(; *array < inputLength; i++) {
-//		if(array[i] >= 'a' && array[i] <= 'z') {	// if element is lower case
-//			array[i] -= 'a' - 'A';	// change to upper case
-//		}
-//	}
-//	return array;
-//}
+/**
+* @brief Takes in a char c and determines if it is lower case or upper case
+* @param char c, a standard character
+* @return int, 0 for upper case and 1 for lower case
+*/
+int isLower(char c) {
+	int isLower = 0;	// false
+	if(c >= 'a' && c <= 'z') {	// if element is lower case
+		isLower = 1;	// true		
+	}
+	return isLower;
+}
 
+/**
+ * @brief Runs an input loop, counts the number of vowels in each input line, and prints it to the console
+ * @return void
+ */
 void countVowels() {
-	char *line = 0;
+	char *input = 0;
 	size_t size = 0;
 	int vowelCount = 0;
 
 	while(1) {
-		ssize_t len = getline(&line, &size, stdin);	// len is the length (# of chars) of the user's input line
-//		globalLen = len;
+		ssize_t len = getline(&input, &size, stdin);	// Get user input
 
-		if(len < 0) { break; }	// loop exit condition
+		if(len < 0) { break; }	// while loop exit condition
 
-//		line = toLower(line, len);	// populate an array with the user's input changed to lower case
-
-		// Take the user's input line and make every char lower case
-		for(int i = 0; i < len; i++) {	// for every char in the user's input line
-			if(line[i] >= 'A' && line[i] <= 'Z') {
-				line[i] -= 'A' - 'a';
+		// Change each char to upper case
+		for(int i = 0; i < len; i++) {
+			if(isLower(input[i])) {
+				input[i] -= 'A' - 'a';
 			}
 		}
 
-		// Compare every char to the vowels[] array and increment vowelCount for every vowel found
+		// // Take the user's input line and make every char lower case
+		// for(int i = 0; i < len; i++) {	// for every char in the user's input line
+		// 	if(line[i] >= 'A' && line[i] <= 'Z') {
+		// 		line[i] -= 'A' - 'a';
+		// 	}
+		// }
+
+		// Compare each char to the vowels[] array, incrementing vowelCount for each vowel match
 		for(int i = 0; i < len; i++) {
-			for(int k = 0; k < arrLength; k++) {
-				if(line[i] == vowels[k]) { vowelCount++; }
+			for(int k = 0; k < vowelsArrayLength; k++) {
+				if(input[i] == vowels[k]) { vowelCount++; }
 			}
 		}
 
