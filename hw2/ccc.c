@@ -1,5 +1,5 @@
-#include <stdio.h>
-#include <ccc.h>
+#include <stdio.h>	// Angle brackets used to include standard libraries
+#include "ccc.h"	// Double quotes used to include local files
 
 static char programName[];
 const char vowels[] = "aeiou";
