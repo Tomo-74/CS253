@@ -1,7 +1,7 @@
 #include <stdio.h>	// Angle brackets used to include standard libraries
 #include "ccc.h"	// Double quotes used to include local files
 
-static char programName[];
+static char *programName;
 const char vowels[] = "aeiou";
 
 
@@ -51,7 +51,7 @@ static void countVowels() {
 
 
 int main(int argc, char *argv[]) {
-	*programName = argv[0];
+	programName = argv[0];
 
 	countVowels();
 	return 0;
