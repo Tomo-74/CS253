@@ -1,32 +1,20 @@
 #include <stdio.h>	// Angle brackets used to include standard libraries
 #include "ccc.h"	// Double quotes used to include local files
 
+#define numCategories 11
+
+typedef struct {
+	const char* categoryName;
+	const char* validChars;
+} ChrCat;
+
+typedef ChrCat ChrCats[numCategories];
 static char *programName;
-const char vowels[] = "aeiou";
 
-
-/**
- * Takes in a char c and returns if it is upper case
- *
- * @param char c
- * @return int, 0 for upper case and 1 for lower case
- */
-static int isUpperCase(char c) {
-	int isUpperCase = 0;	// "false"
-	if(c >= 'A' && c <= 'Z') {	// Determines if char is upper case
-		isUpperCase = 1;	// "true"
-	}
-	return isUpperCase;
-}
-
-
-/** Runs a loop that: collects user input via getline(), counts the number of vowels in the input, and prints it to stdout
- *  @return void
- */
-static void countVowels() {
+static void takeInput(char* args) {
 	char *input = 0;
 	size_t size = 0;
-	int vowelCount = 0;
+	static ChrCats chrcats = {};
 
 	while(1) {
 		ssize_t len = getline(&input, &size, stdin);	// Get user input, storing input length in len
@@ -44,15 +32,36 @@ static void countVowels() {
 			}
 		}
 
-		printf("%d\n", vowelCount);
+	printf("%d\n", vowelCount);
 		vowelCount = 0;
 	}
+/*
+ * Takes in a char c and returns if it is upper case
+ *
+ * @param char c
+ * @return int, 0 for upper case and 1 for lower case
+ */
+static int isUpperCase(char c) {
+	int isUpperCase = 0;	// "false"
+	if(c >= 'A' && c <= 'Z') {	// Determines if char is upper case
+		isUpperCase = 1;	// "true"
+	}
+	return isUpperCase;
+}
+
+
+/** Runs a loop that: collects user input via getline(), counts the number of vowels in the input, and prints it to stdout
+ *  @return void
+ */
+static void vowelCount() {
+	int vowelCount = 0;
 }
 
 
 int main(int argc, char *argv[]) {
 	programName = argv[0];
 
+	takeInput(*argv);
 	countVowels();
 	return 0;
 }
