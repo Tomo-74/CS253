@@ -11,7 +11,7 @@ static int countOccurences(char input[], ssize_t len, char targetChars[], ssize_
 	return count;
 }
 
-extern void ccc(char input[], ssize_t len, ChrCat categories[], ssize_t numCategories) {
+extern void ccc(char input[], ssize_t len, ChrCat categories[], ssize_t numCategories) {	
 	for(int i = 0; i < numCategories; i++) {	// For each category in the struct
 		categories[i].count = countOccurences(input, len, categories[i].validChars, sizeof(categories[i].validChars));	// Count the number of char occurences for that category and update the struct's count variable
 		printf("%s %ld\n", categories[i].name, categories[i].count);	// Print output to console
