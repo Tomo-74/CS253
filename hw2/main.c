@@ -2,34 +2,19 @@
 // #include <stdlib.h>
 #include "ccc.h"
 
-static char* programName;
+// static char* programName;
 
 int main(int argc, char* argv[]) {
-	programName = argv[0];
+//	programName = argv[0];	
 	char* input = 0;
-	size_t size = 0;
-
-	static ChrCats categories = {
-		{"vowels", "aeiou", 0},
-/*
-		{"consonants", "bcdfghjklmnpqrstvwxyz", 0}	
-		{"letters", "abcdefghijklmnopqrstuvwxyz", 0},
-		{"digits", "0123456789", 0},
-		{"punctuation", "~`!@#$%^&*()_+-={}[]|\\;:,<.>/?'\"", 0},
-		{"ascender", "bdfhklt", 0},
-		{"descender", "gjpqy", 0},
-		{"upper", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 0},
-		{"lower", "abcdefghijklmnopqrstuvwxyz", 0},
-		{"curvy", "abcdefghjmnopqrstuy", 0},
-		{"sticky", "iklvwxz", 0},
-*/
-		{0}
-	};
-
+	size_t inputSize = 0;
+	
+	// Get user input from command line
 	while(1) {
-		ssize_t len = getline(&input, &size, stdin);
-		if(len < 0) break;	
-		ccc(input, len, categories, sizeof(categories));
-	}	
+		ssize_t inputLen = getline(&input, &inputSize, stdin);
+//		inputLen -= 1;
+		if(inputLen < 0) break;	
+		ccc(input, inputLen);
+	}
 	return 0;
 }
