@@ -1,67 +1,21 @@
-#include <stdio.h>	// Angle brackets used to include standard libraries
-#include "ccc.h"	// Double quotes used to include local files
+#include <stdio.h>
+#include "ccc.h"
 
-#define numCategories 11
-
-typedef struct {
-	const char* categoryName;
-	const char* validChars;
-} ChrCat;
-
-typedef ChrCat ChrCats[numCategories];
-static char *programName;
-
-static void takeInput(char* args) {
-	char *input = 0;
-	size_t size = 0;
-	static ChrCats chrcats = {};
-
-	while(1) {
-		ssize_t len = getline(&input, &size, stdin);	// Get user input, storing input length in len
-
-		if(len < 0) { break; }	// while loop exit condition
-
-		for(int i = 0; i < len; i++) {
-			if(isUpperCase(input[i])) { input[i] += 'a' - 'A'; }	// If an input char is upper case, change it to lower case
+static int countOccurences(char input[], ssize_t len, char targetChars[], ssize_t len2) {
+	int count = 0;
+	for(int i = 0; i < len; i++) {
+		for(int j = 0; j < len2; j++) {
+			if(input[i] == targetChars[j]) count += 1;
 		}
-
-		// Compare each input char to the vowels[] array, incrementing vowelCount for each vowel found
-		for(int i = 0; i < len; i++) {
-			for(size_t k = 0; k < sizeof(vowels); k++) {
-				if(input[i] == vowels[k]) { vowelCount++; }
-			}
-		}
-
-	printf("%d\n", vowelCount);
-		vowelCount = 0;
 	}
-/*
- * Takes in a char c and returns if it is upper case
- *
- * @param char c
- * @return int, 0 for upper case and 1 for lower case
- */
-static int isUpperCase(char c) {
-	int isUpperCase = 0;	// "false"
-	if(c >= 'A' && c <= 'Z') {	// Determines if char is upper case
-		isUpperCase = 1;	// "true"
+	return count;
+}
+
+extern void ccc(char input[], ssize_t len, ChrCat categories[], ssize_t numCategories) {
+	for(int i = 0; i < numCategories; i++) {	// For each category in the struct
+		categories[i].count = countOccurences(input, len, categories[i].validChars, sizeof(categories[i].validChars));	// Count the number of char occurences for that category and update the struct's count variable
+		printf("%s %ld\n", categories[i].name, categories[i].count);	// Print output to console
 	}
-	return isUpperCase;
+//	vowelCount = 0;
 }
 
-
-/** Runs a loop that: collects user input via getline(), counts the number of vowels in the input, and prints it to stdout
- *  @return void
- */
-static void vowelCount() {
-	int vowelCount = 0;
-}
-
-
-int main(int argc, char *argv[]) {
-	programName = argv[0];
-
-	takeInput(*argv);
-	countVowels();
-	return 0;
-}
