@@ -15,8 +15,6 @@ int main(int argc, char* argv[]) {
 	
 	// Get user input from command line
 	while(1) {
-		// Add the default character categories to the struct
-		
 		ssize_t inputLen = getline(&input, &inputSize, stdin);	// getline() adds \0 to the end of the input, so inputLen is +1
 		if(inputLen < 0) break;	
 		ccc(input, inputLen);
