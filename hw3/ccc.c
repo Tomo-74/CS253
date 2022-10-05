@@ -1,6 +1,6 @@
-#include <stdio.h>
 #include "ccc.h"
-#define MAXCATS		// The maximum number of character categories. Can be changed by the user through the command line at runtime
+
+#define MAXCATS	12	// Default max number of character categories. Can be changed by the user with the -D flag from command line
 
 //////////////
 /// Fields ///
@@ -13,7 +13,7 @@ typedef struct {
 
 typedef ChrCat ChrCats[MAXCATS];	// An array of ChrCat structs, whose size is set to MAXCATS at compile time
 
-static ChrCats categories = {{0}};
+static ChrCats categories = {{0}};	// {0} populates all the structs' members with 0
 
 /*
 Common character categories:
@@ -30,7 +30,7 @@ Common character categories:
 	{"sticky", "iklvwxzAEFHIKLMNTVWXYZ", 0}
 */
 
-const int numCategories = sizeof(categories) / sizeof(categories[0]);	// The number of character categories AKA the length of the categories array
+static int numCats = 0;	// The number of character categories AKA the length of the categories array
 
 
 
@@ -50,6 +50,18 @@ static int getLengthOfArray(char* array) {
 		length++;
 	}
 	return length;
+}
+
+
+extern void addCat(NewCat newCat) {
+	if(numCats < MAXCATS) {
+		categories[numCats].name = newCat.newCatName;
+		categories[numCats].targetChars = newCat.newCatChars;
+		categories[numCats].count = 0;
+		numCats++;	
+	} else {
+		// print exception message
+	}
 }
 
 
@@ -76,14 +88,8 @@ static int countOccurences(char input[], ssize_t inputLen, char targetChars[], i
 }
 
 
-/**
- * Finds the number of times the character categories occur in a string input 
- *
- * @param input the string to search through
- * @param inputLen the length of the string
- */
 extern void ccc(char input[], ssize_t inputLen) {	
-	for(int i = 0; i < numCategories; i++) {	// For each category in the struct
+	for(int i = 0; i < numCats; i++) {	// For each category in the struct
 		int numTargetChars = getLengthOfArray(categories[i].targetChars);
 		categories[i].count = countOccurences(input, inputLen, categories[i].targetChars, numTargetChars);	// Count the number of char occurences for that category and update the struct's count variable
 		printf("%s %d\n", categories[i].name, categories[i].count);	// Print output to console
@@ -91,15 +97,10 @@ extern void ccc(char input[], ssize_t inputLen) {
 }
 
 
-/**
- * Returns a string representation of the category names and counts
- * 
- * @param count a counter variable that must be 0 in the initial function call
- */
 extern char* categoriesToString(int i) {
 	char* ts;
 	
-	if(i == numCategories) { ts = ""; return ts; }	// Base case: recursion reaches the end of the categories array
+	if(i == numCats) { ts = ""; return ts; }	// Base case: recursion reaches the end of the categories array
 	else {
 		asprintf(&ts, "<%s %d> %s", categories[i].name, categories[i].count, categoriesToString(i+1));
 		return ts;
