@@ -6,7 +6,7 @@
  */
 int main(int argc, char* argv[]) {
 	if((argc - 1) % 2 != 0) {	// If the user input an odd number of name/category pairs
-		// TODO: print exception message
+		ERROR("Provided program with an odd number of name/category pairs");
 		return 0;
 	}
 
@@ -18,8 +18,11 @@ int main(int argc, char* argv[]) {
 	addCat(lowerConsonants);
 	addCat(letters);
 
-	// TODO: Add user-defined categories
-	
+	// Add user-defined categories
+	for(int i = 1; i <= argc-1; i+=2) {
+		NewCat newCat = {argv[i], argv[i+1]};
+		addCat(newCat);
+	}
 
 
 	// User input variables	

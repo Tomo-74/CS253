@@ -54,14 +54,25 @@ static int getLengthOfArray(char* array) {
 
 
 extern void addCat(NewCat newCat) {
-	if(numCats < MAXCATS) {
-		categories[numCats].name = newCat.newCatName;
-		categories[numCats].targetChars = newCat.newCatChars;
-		categories[numCats].count = 0;
-		numCats++;	
-	} else {
-		// print exception message
+	numCats++;	
+
+	// Check if there is space in the category array	
+	if(numCats > MAXCATS) {
+		ERROR("Maximum category capacity exceeded. Increase category capacity with the -D flag. Terminating program.");
 	}
+	
+	char* categoryName = newCat.newCatName;
+	char* targetChars = newCat.newCatChars;
+
+	for(int i = 1; i <= sizeof(newCat.newCatChars);	i++) {	// Loop for each of the target characters
+		if(targetChars[i-1] == "^") {
+			
+	}
+
+	// Add category:
+//	categories[numCats-1].name = newCat.newCatName;
+//	categories[numCats-1].targetChars = newCat.newCatChars;
+	categories[numCats-1].count = 0;
 }
 
 
