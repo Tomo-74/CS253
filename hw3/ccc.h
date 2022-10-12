@@ -6,8 +6,8 @@
 #include "error.h"
 
 typedef struct {
-	char* newCatName;
-	char* newCatChars;
+	char* name;
+	char* targetChars;
 } NewCat;
 
 

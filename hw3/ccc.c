@@ -52,6 +52,14 @@ static int getLengthOfArray(char* array) {
 	return length;
 }
 
+// Private utility method. Takes in a character and returns whether it is alphabetic or not
+// TODO: document this method
+static int isAlpha(char c) {
+	int isAlpha = 0;
+	if((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')) isAlpha = 1;
+	return isAlpha;
+}
+
 
 extern void addCat(NewCat newCat) {
 	numCats++;	
@@ -60,18 +68,19 @@ extern void addCat(NewCat newCat) {
 	if(numCats > MAXCATS) {
 		ERROR("Maximum category capacity exceeded. Increase category capacity with the -D flag. Terminating program.");
 	}
-	
-	char* categoryName = newCat.newCatName;
-	char* targetChars = newCat.newCatChars;
 
-	for(int i = 1; i <= sizeof(newCat.newCatChars);	i++) {	// Loop for each of the target characters
+/*	
+	char* targetChars = newCat.targetChars;
+	for(int i = 1; i <= sizeof(targetChars); i++) {	// Loop for each of the target characters in the user-specified category
 		if(targetChars[i-1] == "^") {
+			char* caseWrappedChars[numTargetChars-i-1];	// define an array that will hold every char after the ^
 			
 	}
+*/
 
 	// Add category:
-//	categories[numCats-1].name = newCat.newCatName;
-//	categories[numCats-1].targetChars = newCat.newCatChars;
+	categories[numCats-1].name = newCat.name;
+	categories[numCats-1].targetChars = newCat.targetChars;
 	categories[numCats-1].count = 0;
 }
 
@@ -87,12 +96,22 @@ extern void addCat(NewCat newCat) {
  */
 static int countOccurences(char input[], ssize_t inputLen, char targetChars[], int numTargetChars) {
 	int count = 0;
-	for(int i = 0; i < inputLen - 1; i++) {	// -1 to account for the \0 added to the end of the input by getline
-		for(int j = 0; j < numTargetChars; j++) {	// -1 to account for the \0 in categories[i].targetChars
-			if(input[i] == targetChars[j]) {
+	int foundMatch = 0;
+	for(int i = 0; i < inputLen - 1; i++) {	// For each char in the user's input line (-1 to account for the \0 added to the end of the input by getline)
+		for(int j = 0; j < numTargetChars; j++) {	// For each char in targetChars (-1 to account for the \0 in categories[i].targetChars)
+			if(targetChars[j] == '^' && isAlpha(input[i])) {
+				for(int k = j+1; k < numTargetChars; k++) {
+					if(input[i] == targetChars[k] || input[i] == targetChars[k]-32 || input[i] == targetChars[k]+32) {	// If the input char and the target char are equal regardless of case
+						count++;
+						foundMatch = 1;
+						break;
+					}
+				}
+			} else if(input[i] == targetChars[j]) {
 				count++;
 				break;
 			}
+			if(foundMatch) { foundMatch = 0; break; }
 		}
 	}
 	return count;
