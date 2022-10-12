@@ -1,6 +1,6 @@
 #include "ccc.h"
 
-#define MAXCATS	12	// Default max number of character categories. Can be changed by the user with the -D flag from command line
+#define MAXCATS	13	// Default max number of character categories. Can be changed by the user with the -D flag from command line
 
 //////////////
 /// Fields ///
@@ -39,7 +39,7 @@ static int numCats = 0;	// The number of character categories AKA the length of 
 /////////////////
 
 /**
- * Calculates and returns the length of a char array
+ * Calculates and returns the length of a char array.
  *
  * @param array a char array to find the length of
  * @return length the length of the array
@@ -52,8 +52,13 @@ static int getLengthOfArray(char* array) {
 	return length;
 }
 
-// Private utility method. Takes in a character and returns whether it is alphabetic or not
-// TODO: document this method
+
+/**
+ * Determines whether a given character is alphabetic or not.
+ *
+ * @param c a character to check
+ * @ return isAlpha whether or not c is alphabetic
+*/
 static int isAlpha(char c) {
 	int isAlpha = 0;
 	if((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')) isAlpha = 1;
@@ -97,9 +102,13 @@ extern void addCat(NewCat newCat) {
 static int countOccurences(char input[], ssize_t inputLen, char targetChars[], int numTargetChars) {
 	int count = 0;
 	int foundMatch = 0;
+
+
 	for(int i = 0; i < inputLen - 1; i++) {	// For each char in the user's input line (-1 to account for the \0 added to the end of the input by getline)
 		for(int j = 0; j < numTargetChars; j++) {	// For each char in targetChars (-1 to account for the \0 in categories[i].targetChars)
-			if(targetChars[j] == '^' && isAlpha(input[i])) {
+			
+			// Case: capitalization folding	in user-defined category ('^')
+			if(targetChars[j] == '^' && isAlpha(input[i])) {	// If the current targetChar is a carrot and the current input char is alphabetic
 				for(int k = j+1; k < numTargetChars; k++) {
 					if(input[i] == targetChars[k] || input[i] == targetChars[k]-32 || input[i] == targetChars[k]+32) {	// If the input char and the target char are equal regardless of case
 						count++;
@@ -107,11 +116,29 @@ static int countOccurences(char input[], ssize_t inputLen, char targetChars[], i
 						break;
 					}
 				}
-			} else if(input[i] == targetChars[j]) {
+			}
+			
+			// Case: character range in user-defined category ('-')
+			else if(targetChars[j] == '-' && j-1 >= 0 && j+1 <= numTargetChars) {	// Else if the current targetChar is a hyphen that is not located at the front or end of targetChars
+				char startChar = targetChars[j-1];
+				char endChar = targetChars[j+1];
+	
+				for(int k = startChar; k < endChar; k++) {
+					if(input[i] == k) {
+						count++;
+						foundMatch = 1;
+						break;
+					}
+				}		
+			}
+			
+			// Default case: no special characters ('^' or '-') are present in the targetChars array
+			else if(input[i] == targetChars[j]) {
 				count++;
 				break;
 			}
-			if(foundMatch) { foundMatch = 0; break; }
+			
+			if(foundMatch) { foundMatch = 0; break; }	// Boolean flag used to prevent the j for-loop from continuing to loop after a character match has already been found on line 110
 		}
 	}
 	return count;
@@ -136,5 +163,4 @@ extern char* categoriesToString(int i) {
 		return ts;
 	}
 }
-
 

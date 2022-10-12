@@ -5,16 +5,26 @@
 #include <stdlib.h>	// For free() function
 #include "error.h"
 
+/* NewCat, a struct type to hold the information for a user-defined character category before it
+   is added to the categories array in ccc.c. A struct is used here because this makes it
+   much simpler to pass char arrays between functions and avoid passing pointers. */
 typedef struct {
 	char* name;
 	char* targetChars;
 } NewCat;
 
 
+extern int verbose;
+
 /**
- * TODO: function documentation
+ * Takes in a struct whose members contain the information of a user-defined
+ * character category. Adds this user-defined category to the categories array
+ * in ccc.c
+ *
+ * @param newCat a NewCat struct containing information for a new, user-defined character category
  */
 extern void addCat(NewCat newCat);
+
 
 /**
  * Finds the number of times the character categories occur in a string input 

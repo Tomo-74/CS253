@@ -10,7 +10,6 @@ int main(int argc, char* argv[]) {
 		return 0;
 	}
 
-
 	// Add default categories
 	NewCat lowerVowels = {"lower vowels", "aeiou"};
 	NewCat lowerConsonants = {"lower consonants", "bcdfghjklmnpqrstvwxyz"};
