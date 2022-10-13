@@ -1,5 +1,5 @@
-include /home/JBuffenb/classes/253/pub/GNUmakefile
+include ../GNUmakefile
 
-make:
+make: GNUmakefile
 	MAXCATS=10
 	gcc -c ccc.c -DMAXCATS=$(MAXCATS)
