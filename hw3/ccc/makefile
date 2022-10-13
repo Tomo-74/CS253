@@ -1,4 +1,4 @@
 include ../GNUmakefile
 
-MAXCATS=3
+MAXCATS=10
 defines+=-DMAXCATS=$(MAXCATS)

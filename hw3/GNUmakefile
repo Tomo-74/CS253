@@ -21,6 +21,6 @@ clean: ; rm -f $(prog) *.o *.d *.[isl] *.map
 test:=echo -e "Hello\nworld!" |
 
 run:      $(prog) ; $(test) ./$< $(args)
-valgrind: $(prog) ; $(test) $@ --leak-check=full --show-leak-kinds=all ./$< $(args)
+valgrind: $(prog) ; $(test) $@ --leak-check=full ./$< $(args)
 
 sinclude *.d

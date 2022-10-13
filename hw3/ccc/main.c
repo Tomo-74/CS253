@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
 	// Add default categories
 	NewCat lowerVowels = {"lower vowels", "aeiou"};
 	NewCat lowerConsonants = {"lower consonants", "bcdfghjklmnpqrstvwxyz"};
-	NewCat letters = {"letters", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"};
+	NewCat letters = {"letters", "^abcdefghijklmnopqrstuvwxyz"};
 	addCat(lowerVowels);
 	addCat(lowerConsonants);
 	addCat(letters);
@@ -34,8 +34,8 @@ int main(int argc, char* argv[]) {
 		ssize_t inputLen = getline(&input, &inputSize, stdin);	// getline() adds \0 to the end of the input, so inputLen is +1
 		if(inputLen < 0) break;	
 		ccc(input, inputLen);
-//		printf(categoriesToString(0));	// optional toString() call to get more information about the character categories
-		printf("\n");	// Newline to break up command line output
+		printf(categoriesToString(0));	// optional toString() call to get more information about the character categories
+		printf("\n\n");	// Newline to break up command line output
 	}
 	free(input);
 	return 0;
