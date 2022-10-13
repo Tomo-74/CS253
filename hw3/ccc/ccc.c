@@ -1,7 +1,5 @@
 #include "ccc.h"
 
-#define MAXCATS	13	// Default max number of character categories. Can be changed by the user with the -D flag from command line
-
 //////////////
 /// Fields ///
 //////////////
@@ -12,26 +10,8 @@ typedef struct {
 } ChrCat;
 
 typedef ChrCat ChrCats[MAXCATS];	// An array of ChrCat structs, whose size is set to MAXCATS at compile time
-
-static ChrCats categories = {{0}};	// {0} populates all the structs' members with 0
-
-/*
-Common character categories:
-	{"vowels", "aeiouAEIOU", 0},
-	{"consonants", "bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ", 0},	
-	{"letters", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", 0},
-	{"digits", "0123456789", 0},
-	{"punctuation", "~`!@#$%^&*()_+-={}[]|\\;:,<.>/?'\"", 0},
-	{"ascender", "bdfhklthkltABCDEFGHIJKLMNOPQRSTUVWXYZ", 0},
-	{"descender", "gjpqy", 0},
-	{"upper", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 0},
-	{"lower", "abcdefghijklmnopqrstuvwxyz", 0},
-	{"curvy", "abcdefghjmnopqrstuyBCDGJOPQRSU", 0},
-	{"sticky", "iklvwxzAEFHIKLMNTVWXYZ", 0}
-*/
-
+static ChrCats categories = {{0}};	// Populate all the structs' members with 0
 static int numCats = 0;	// The number of character categories AKA the length of the categories array
-
 
 
 /////////////////
@@ -67,11 +47,12 @@ static int isAlpha(char c) {
 
 
 extern void addCat(NewCat newCat) {
+//	printf("%d", MAXCATS);	// Check the macro value
 	numCats++;	
 
 	// Check if there is space in the category array	
 	if(numCats > MAXCATS) {
-		ERROR("Maximum category capacity exceeded. Increase category capacity with the -D flag. Terminating program.");
+		ERROR("Maximum category capacity exceeded. Increase category capacity at compile time.");
 	}
 
 /*	
