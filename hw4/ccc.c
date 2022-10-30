@@ -9,15 +9,16 @@ typedef struct {
 	int count;
 } ChrCat;
 
-typedef ChrCat ChrCats[MAXCATS];	// An array of ChrCat structs, whose size is set to MAXCATS at compile time
-static ChrCats categories = {{0}};	// Populate all the structs' members with 0
+typedef ChrCat* ChrCats;
+static ChrCats categories = 0;
 static int numCats = 0;	// The number of character categories AKA the length of the categories array
+static int maxCats = 0;	// The capacity of the categories array
+size_t arraySize = 6;	// In bytes
 
 
 /////////////////
 /// Functions ///
 /////////////////
-
 /**
  * Calculates and returns the length of a char array.
  *
@@ -46,28 +47,24 @@ static int isAlpha(char c) {
 }
 
 
-extern void addCat(NewCat newCat) {
-//	printf("%d", MAXCATS);	// Check the macro value
+extern void addCat(char* name, char* targetChars) {
 	numCats++;	
-
-	// Check if there is space in the category array	
-	if(numCats > MAXCATS) {
-		ERROR("Maximum category capacity exceeded. Increase category capacity at compile time.");
+	if(numCats-1 == 0) {			// When the first category is added...
+		categories = realloc(categories, arraySize);	// allocate enough space for one category
+		maxCats=1;
 	}
-
-/*	
-	char* targetChars = newCat.targetChars;
-	for(int i = 1; i <= sizeof(targetChars); i++) {	// Loop for each of the target characters in the user-specified category
-		if(targetChars[i-1] == "^") {
-			char* caseWrappedChars[numTargetChars-i-1];	// define an array that will hold every char after the ^
-			
+	
+	else {							// During all subsequent additions...
+		if(numCats > maxCats) {					// If there's not enough space in the array, double the capacity 
+			arraySize*=2;
+			maxCats*=2;
+			categories = realloc(categories, arraySize);
+		} else {							// If there is enough space, just add the new category
+			categories[numCats-1].name = name;
+			categories[numCats-1].targetChars = targetChars;
+			categories[numCats-1].count = 0;
+		}
 	}
-*/
-
-	// Add category:
-	categories[numCats-1].name = newCat.name;
-	categories[numCats-1].targetChars = newCat.targetChars;
-	categories[numCats-1].count = 0;
 }
 
 
@@ -80,15 +77,14 @@ extern void addCat(NewCat newCat) {
  * @param numTargetChars the number of elements in the targetChars array
  * @return count the number of occurences
  */
-static int countOccurences(char input[], ssize_t inputLen, char targetChars[], int numTargetChars) {
+static int countOccurences(char* input, ssize_t inputLen, char* targetChars, int numTargetChars) {
 	int count = 0;
-	int foundMatch = 0;
+	int foundMatch = 0; // Boolean
 
-
-	for(int i = 0; i < inputLen - 1; i++) {	// For each char in the user's input line (-1 to account for the \0 added to the end of the input by getline)
+	for(int i = 0; i < inputLen-1; i++) {	// For each char in the user's input line (-1 to account for the \0 added to the end of the input by getline)
 		for(int j = 0; j < numTargetChars; j++) {	// For each char in targetChars (-1 to account for the \0 in categories[i].targetChars)
 			
-			// Case: capitalization folding	in user-defined category ('^')
+			/* Case: capitalization folding ^ */
 			if(targetChars[j] == '^' && isAlpha(input[i])) {	// If the current targetChar is a carrot and the current input char is alphabetic
 				for(int k = j+1; k < numTargetChars; k++) {
 					if(input[i] == targetChars[k] || input[i] == targetChars[k]-32 || input[i] == targetChars[k]+32) {	// If the input char and the target char are equal regardless of case
@@ -99,7 +95,7 @@ static int countOccurences(char input[], ssize_t inputLen, char targetChars[], i
 				}
 			}
 			
-			// Case: character range in user-defined category ('-')
+			/* Case: char range - */
 			else if(targetChars[j] == '-' && j-1 >= 0 && j+1 <= numTargetChars) {	// Else if the current targetChar is a hyphen that is not located at the front or end of targetChars
 				char startChar = targetChars[j-1];
 				char endChar = targetChars[j+1];
@@ -113,7 +109,7 @@ static int countOccurences(char input[], ssize_t inputLen, char targetChars[], i
 				}		
 			}
 			
-			// Default case: no special characters ('^' or '-') are present in the targetChars array
+			/* Default case: no special characters */
 			else if(input[i] == targetChars[j]) {
 				count++;
 				break;
@@ -126,11 +122,11 @@ static int countOccurences(char input[], ssize_t inputLen, char targetChars[], i
 }
 
 
-extern void ccc(char input[], ssize_t inputLen) {	
-	for(int i = 0; i < numCats; i++) {	// For each category in the struct
+extern void ccc(char* input, ssize_t inputLen) {	
+	for(int i = 0; i < numCats; i++) {	// For each category in the array
 		int numTargetChars = getLengthOfArray(categories[i].targetChars);
-		categories[i].count = countOccurences(input, inputLen, categories[i].targetChars, numTargetChars);	// Count the number of char occurences for that category and update the struct's count variable
-		printf("%s %d\n", categories[i].name, categories[i].count);	// Print output to console
+		categories[i].count = countOccurences(input, inputLen, categories[i].targetChars, numTargetChars);	// Count the number of char occurences for that category and update the count variable
+		printf("%s %d\n", categories[i].name, categories[i].count);	// Print results to console
 	}
 }
 
