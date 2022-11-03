@@ -12,11 +12,11 @@ HW4
 	5. Upon running, the program immediately takes in user input. This process loops indefinitely. To end the program, type Ctrl+d.
 	
 	Compilation and run example:
-		[thomaslonowski@onyxnode30 ccc]$ make
-		gcc -o main.o -c main.c -g -Wall -MMD -D_GNU_SOURCE -DMAXCATS=10
-		gcc -o ccc.o -c ccc.c -g -Wall -MMD -D_GNU_SOURCE -DMAXCATS=10
-		gcc -o ccc main.o ccc.o -g -Wl,-Map=ccc.map
-		[thomaslonowski@onyxnode30 ccc]$ ccc digits "0-9" vowels "^aeiou" favorites "tj1"
+		[thomaslonowski@onyxnode30 hw4]$ make
+		gcc -o main.o -c main.c -g -Wall -MMD -D_GNU_SOURCE
+		gcc -o ccc.o -c ccc.c -g -Wall -MMD -D_GNU_SOURCE
+		gcc -o hw4 main.o ccc.o -g -Wl,-Map=hw4.map
+		[thomaslonowski@onyxnode30 hw4]$ hw4 greeting "^hello" favorites "abc18" lowerDigits "0-5"
 
 	Special characters:
 		^	a carrot designates capitilization folding (only when a carrot is the first character). Characters following a carrot are case-insensitive (both upper and lower case are counted).
@@ -39,4 +39,30 @@ HW4
 *************************
  Valgrind documentation
 *************************
+	[thomaslonowski@onyxnode30 hw4]$ make valgrind
+	echo -e "Hello\nworld!" | valgrind --leak-check=full ./hw4 
+	==1590882== Memcheck, a memory error detector
+	==1590882== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+	==1590882== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+	==1590882== Command: ./hw4
+	==1590882== 
+	lower vowels 2
+	lower consonants 2
+	letters 5
+	<lower vowels 2> <lower consonants 2> <letters 5> 
+
+	lower vowels 1
+	lower consonants 4
+	letters 5
+	<lower vowels 1> <lower consonants 4> <letters 5> 
+
+	==1590882== 
+	==1590882== HEAP SUMMARY:
+	==1590882==     in use at exit: 0 bytes in 0 blocks
+	==1590882==   total heap usage: 20 allocs, 20 frees, 6,206 bytes allocated
+	==1590882== 
+	==1590882== All heap blocks were freed -- no leaks are possible
+	==1590882== 
+	==1590882== For lists of detected and suppressed errors, rerun with: -s
+	==1590882== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 

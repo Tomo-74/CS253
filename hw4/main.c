@@ -7,7 +7,7 @@
 int main(int argc, char* argv[]) {
 	if((argc - 1) % 2 != 0) {	// If the user input an odd number of name/category pairs
 		ERROR("Error: provided program with an odd number of name/category pairs");
-		return -1;
+		return 0;
 	}
 
 	// Add default categories

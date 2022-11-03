@@ -28,12 +28,10 @@ extern void ccc(char* input, ssize_t len);
 /**
  * Returns a string representation of the category names and counts
  * 
- * @param count a counter variable that must be 0 in the initial function call
  * @return pointer to a char array containing a string description of the character counts
  */
-extern char* categoriesToString(int count);
+extern char* categoriesToString();
 
-extern void freeToString();
 
 /**
  * Calls free() on the categories array, clearing the

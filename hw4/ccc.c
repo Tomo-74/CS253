@@ -13,7 +13,7 @@ typedef ChrCat* ChrCats;
 static ChrCats categories = 0;
 static int numCats = 0;	// The number of character categories AKA the length of the categories array
 static int maxCats = 0;	// The capacity of the categories array
-size_t arraySize = sizeof(ChrCat);	// 24 bytes
+size_t arraySize = sizeof(ChrCat);	// Size of one ChrCat struct on this machine is 24 bytes
 
 
 /////////////////
@@ -122,6 +122,11 @@ static int countOccurences(char* input, ssize_t inputLen, char* targetChars, int
 
 
 extern void ccc(char* input, ssize_t inputLen) {	
+	if(numCats==0) {
+		ERROR("No character categories to evaluate input with");
+		exit(0);
+	}	
+
 	for(int i = 0; i < numCats; i++) {	// For each category in the array
 		int numTargetChars = getArrayLength(categories[i].targetChars);
 		categories[i].count = countOccurences(input, inputLen, categories[i].targetChars, numTargetChars);	// Count the number of char occurences for that category and update the count variable
@@ -129,10 +134,11 @@ extern void ccc(char* input, ssize_t inputLen) {
 	}
 }
 
+
 /*
+// toString function MY WAY
 extern char* categoriesToString(int i) {
 	char* ts;
-	
 	if(i == numCats) { ts = ""; return ts; }	// Base case: recursion reaches the end of the categories array
 	else {
 		asprintf(&ts, "<%s %d> %s", categories[i].name, categories[i].count, categoriesToString(i+1));
@@ -142,18 +148,27 @@ extern char* categoriesToString(int i) {
 */
 
 
-extern char* categoriesToString(int i) {
-	char* ts;
-	if(i == numCats) { ts = ""; return ts; }	// Base case: recursion reaches the end of the categories array
-	else {
-		asprintf(&ts, "<%s %d> %s", categories[i].name, categories[i].count, categoriesToString(i+1));
-		return ts;
-	}
+/**
+ * Returns a string representation of the character category search results
+ *
+ * @param i an integer to base the recursion off of. Must be 0 in the toString call
+ */
+static char* toString(int i) {
+	if(i == numCats) return strdup("");	// Base case: recursion reaches the end of the categories array
+	
+	char* s;
+	char* ts = toString(i+1);
+
+	asprintf(&s, "<%s %d> %s", categories[i].name, categories[i].count, ts);
+	free(ts);
+	return s;
 }
 
-extern void freeCats() {
-//	for(ChrCat* cat = categories; cat->name != '\0'; cat+=sizeof(ChrCat)) free(cat);	// Free each individual struct in the categories array (not necessary because they're not dynamically allocated)
-	free(categories);
+
+extern char* categoriesToString() {
+	return toString(0);
 }
 
+
+extern void freeCats() { free(categories); }
 
