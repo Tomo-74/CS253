@@ -5,8 +5,8 @@
 #include "error.h"
 
 typedef struct {
-  List car;
-  List cdr;
+  List car;	// value of node
+  List cdr;	// pointer to next node
 } *Pair;
 
 extern List cons(List car, List cdr) {

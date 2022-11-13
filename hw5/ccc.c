@@ -8,15 +8,10 @@ typedef struct {
 	char* name;
 	char* targetChars;
 	int count;
-} ChrCat;
+} *ChrCat;
 
-typedef ChrCat* ChrCats;
-static List head = NULL;
-
-
-static int numCats = 0;	// The number of character categories AKA the length of the categories array
-static int maxCats = 0;	// The capacity of the categories array
-size_t arraySize = sizeof(ChrCat);	// Size of one ChrCat struct on this machine is 24 bytes
+static List categories = 0;
+static int numCats = 0;	// The number of character categories AKA the length of the list
 
 
 /////////////////
@@ -51,23 +46,15 @@ static int isAlpha(char c) {
 
 
 extern void addCat(char* name, char* targetChars) {
-	numCats++;	
-	if(numCats-1 == 0) {			// When the first category is added...
-		categories = realloc(categories, arraySize);	// allocate enough space for one category
-		maxCats=1;
-	}
-	
-	else {							// During all subsequent additions...
-		if(numCats > maxCats) {					// If there's not enough space in the array, double the capacity 
-			arraySize*=2;
-			maxCats*=2;
-			categories = realloc(categories, arraySize);
-		}
-	}
-	// Add the new category
-	categories[numCats-1].name = name;
-	categories[numCats-1].targetChars = targetChars;
-	categories[numCats-1].count = 0;
+	ChrCat newCat = (ChrCat)malloc(sizeof(ChrCat));
+	if(!newCat) ERROR("malloc() failed");
+
+	newCat->name = name;
+	newCat->targetChars = targetChars;
+	newCat->count = 0;
+
+	categories = cons(newCat, categories);	// Construct a node
+	numCats++;
 }
 
 
@@ -125,37 +112,30 @@ static int countOccurences(char* input, ssize_t inputLen, char* targetChars, int
 
 
 extern void ccc(char* input, ssize_t inputLen) {	
-	if(numCats==0) {
-		ERROR("No character categories to evaluate input with");
-		exit(0);
-	}	
+	if(numCats==0) ERROR("No character categories supplied");
 
-	for(int i = 0; i < numCats; i++) {	// For each category in the array
+/*
+	for(int i = 0; i < numCats; i++) {	// For every category...
 		int numTargetChars = getArrayLength(categories[i].targetChars);
 		categories[i].count = countOccurences(input, inputLen, categories[i].targetChars, numTargetChars);	// Count the number of char occurences for that category and update the count variable
 		printf("%s %d\n", categories[i].name, categories[i].count);	// Print results to console
 	}
+*/
+	// How to get to the struct's members?
+	for (List c=categories; c; c=cdr(c)) {
+		int numTargetChars = getArrayLength(c->targetChars);
+		c->count = countOccurences(input, inputLen, c->targetChars, numTargetChars);	// Count the number of char occurences for that category and update the count variable
+		printf("%s %d\n", c->name, c->count);	// Print results to console
+  	}
 }
 
 
 /*
-// toString function MY WAY
-extern char* categoriesToString(int i) {
-	char* ts;
-	if(i == numCats) { ts = ""; return ts; }	// Base case: recursion reaches the end of the categories array
-	else {
-		asprintf(&ts, "<%s %d> %s", categories[i].name, categories[i].count, categoriesToString(i+1));
-		return ts;
-	}
-}
-*/
 
-
-/**
  * Returns a string representation of the character category search results
  *
  * @param i an integer to base the recursion off of. Must be 0 in the toString call
- */
+ 
 static char* toString(int i) {
 	if(i == numCats) return strdup("");	// Base case: recursion reaches the end of the categories array
 	
@@ -174,4 +154,5 @@ extern char* categoriesToString() {
 
 
 extern void freeCats() { free(categories); }
+*/
 

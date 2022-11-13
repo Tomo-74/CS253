@@ -12,8 +12,8 @@ int main(int argc, char* argv[]) {
 
 	// Add default categories
 	addCat("lower vowels", "aeiou");
-	addCat("lower consonants", "bcdfghjklmnpqrstvwxyz");
-	addCat("letters", "^abcdefghijklmnopqrstuvwxyz");
+//	addCat("lower consonants", "bcdfghjklmnpqrstvwxyz");
+//	addCat("letters", "^abcdefghijklmnopqrstuvwxyz");
 
 	// Add user-defined categories
 	for(int i = 1; i <= argc-1; i+=2) addCat(argv[i], argv[i+1]);
@@ -25,14 +25,14 @@ int main(int argc, char* argv[]) {
 	// Get user input from command line
 	while(1) {
 		ssize_t inputLen = getline(&input, &inputSize, stdin);	// getline() adds \0 to the end of the input, so inputLen is +1
-		if(inputLen < 0) break;	
 		ccc(input, inputLen);
+		if(inputLen < 0) break;	
 
-		char* ts = categoriesToString(0);
-		printf("%s\n\n", ts);	// optional toString() call to get more information about the character categories
-		free(ts);
+//		char* ts = categoriesToString(0);
+//		printf("%s\n\n", ts);	// optional toString() call to get more information about the character categories
+//		free(ts);
 	}
-	freeCats();
+//	freeCats();
 	free(input);
 	return 0;
 }
