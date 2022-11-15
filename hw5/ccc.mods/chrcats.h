@@ -24,11 +24,9 @@ extern void ccc(char* input, ssize_t len);
 
 
 /**
- * Returns a string representation of the category names and counts
- * 
- * @return pointer to a char array containing a string description of the character counts
+ * Prints a string representation of the category names and counts
  */
-extern char* categoriesToString();
+extern void catsToString();
 
 
 /**

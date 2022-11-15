@@ -1,22 +1,38 @@
 Thomas Lonowski
 CS 253
-HW4
-
+HW5
 
 *****************************
  Compile & run instructions
 *****************************
-	1. Navigate to the directory where the program is stored ("~/.../hw4").
-	2. Compile the program by running the "make" command. This creates an object file named "hw4" by default. 
-	3. Run the object file by typing its name ("hw4" by default) followed by an even number of "name/target characters" pairs (see example below).
+	1. Navigate to the directory where the program is stored ("~/.../hw5").
+	2. Compile the program by running the "make" command. This creates an object file named "ccc" by default. 
+	3. Run the object file by typing its name ("ccc" by default) followed by an even number of "name/target characters" pairs (see example below).
 	5. Upon running, the program immediately takes in user input. This process loops indefinitely. To end the program, type Ctrl+d.
 	
 	Compilation and run example:
-		[thomaslonowski@onyxnode30 hw5]$ make
+		[thomaslonowski@onyxnode69 ccc.mods]$ make
+		gcc -o chrcats.o -c chrcats.c -g -Wall -MMD -D_GNU_SOURCE
+		gcc -o chrcat.o -c chrcat.c -g -Wall -MMD -D_GNU_SOURCE
+		gcc -o list.o -c list.c -g -Wall -MMD -D_GNU_SOURCE
 		gcc -o main.o -c main.c -g -Wall -MMD -D_GNU_SOURCE
-		gcc -o ccc.o -c ccc.c -g -Wall -MMD -D_GNU_SOURCE
-		gcc -o hw4 main.o ccc.o -g -Wl,-Map=hw4.map
-		[thomaslonowski@onyxnode30 hw4]$ hw4 greeting "^hello" favorites "abc18" lowerDigits "0-5"
+		gcc -o ccc chrcats.o chrcat.o list.o main.o -g -Wl,-Map=ccc.map
+		[thomaslonowski@onyxnode69 ccc.mods]$ ccc greeting "^hello" favs "0-9" digits "0-9"
+		hello world
+		digits 0
+		favs 0
+		greeting 7
+		letters 10
+		lower consonants 7
+		lower vowels 3
+		
+		<digits 0>
+		<favs 0>
+		<greeting 7>
+		<letters 10>
+		<lower consonants 7>
+		<lower vowels 3>
+
 
 	Special characters:
 		^	a carrot designates capitilization folding (only when a carrot is the first character). Characters following a carrot are case-insensitive (both upper and lower case are counted).

@@ -26,12 +26,13 @@ int main(int argc, char* argv[]) {
 	// Get user input from command line
 	while(1) {
 		ssize_t inputLen = getline(&input, &inputSize, stdin);	// getline() adds \0 to the end of the input, so inputLen is +1
-		ccc(input, inputLen);
 		if(inputLen < 0) break;	
-
+		ccc(input, inputLen);
+		
+		catsToString();
+		printf("\n");
 //		char* ts = categoriesToString(0);
 //		printf("%s\n\n", ts);	// optional toString() call to get more information about the character categories
-		printf("\n");
 //		free(ts);
 	}
 	freeCats();
