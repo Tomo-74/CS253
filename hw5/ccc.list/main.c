@@ -12,8 +12,8 @@ int main(int argc, char* argv[]) {
 
 	// Add default categories
 	addCat("lower vowels", "aeiou");
-//	addCat("lower consonants", "bcdfghjklmnpqrstvwxyz");
-//	addCat("letters", "^abcdefghijklmnopqrstuvwxyz");
+	addCat("lower consonants", "bcdfghjklmnpqrstvwxyz");
+	addCat("letters", "^abcdefghijklmnopqrstuvwxyz");
 
 	// Add user-defined categories
 	for(int i = 1; i <= argc-1; i+=2) addCat(argv[i], argv[i+1]);
@@ -30,9 +30,10 @@ int main(int argc, char* argv[]) {
 
 //		char* ts = categoriesToString(0);
 //		printf("%s\n\n", ts);	// optional toString() call to get more information about the character categories
+		printf("\n");
 //		free(ts);
 	}
-//	freeCats();
+	freeCats();
 	free(input);
 	return 0;
 }

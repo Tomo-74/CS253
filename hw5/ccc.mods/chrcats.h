@@ -1,14 +1,12 @@
-#ifndef CCC_H
-#define CCC_H
+#ifndef CHRCATS_H
+#define CHRCATS_H
 
-#include <stdio.h>
-#include <stdlib.h>	// For free() function
-#include "error.h"
+#include "chrcat.h"
+
 
 /**
- * Takes in a struct whose members contain the information of a user-defined
- * character category. Adds this user-defined category to the categories array
- * in ccc.c
+ * Constructs a new node that contains a user-defined character category
+ * and adds it to a singly-linked list of all the categories.
  *
  * @param name an array of characters representing the name of a category
  * @param targetChars an array of characters representing the characters that will be searched for in the user's input

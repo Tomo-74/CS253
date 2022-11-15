@@ -45,16 +45,29 @@ static int isAlpha(char c) {
 }
 
 
-extern void addCat(char* name, char* targetChars) {
-	ChrCat newCat = (ChrCat)malloc(sizeof(ChrCat));
+/**
+ * Takes in a struct whose members contain the information of a user-defined
+ * character category. Adds this user-defined category to a categories container,
+ * such as a list or an array.
+ *
+ * @param name an array of characters representing the name of a category
+ * @param targetChars an array of characters representing the characters that will be searched for in the user's input
+ */
+static ChrCat newCat(char* name, char* targetChars) {
+	ChrCat newCat = (ChrCat)malloc(sizeof(*newCat));
 	if(!newCat) ERROR("malloc() failed");
 
 	newCat->name = name;
 	newCat->targetChars = targetChars;
 	newCat->count = 0;
+	
+	return newCat;
+}
 
-	categories = cons(newCat, categories);	// Construct a node
+
+extern void addCat(char* name, char* targetChars) {
 	numCats++;
+	categories = cons(newCat(name, targetChars), categories);	// Construct a node
 }
 
 
@@ -112,20 +125,13 @@ static int countOccurences(char* input, ssize_t inputLen, char* targetChars, int
 
 
 extern void ccc(char* input, ssize_t inputLen) {	
-	if(numCats==0) ERROR("No character categories supplied");
+	if(!numCats) ERROR("No character categories supplied");
 
-/*
-	for(int i = 0; i < numCats; i++) {	// For every category...
-		int numTargetChars = getArrayLength(categories[i].targetChars);
-		categories[i].count = countOccurences(input, inputLen, categories[i].targetChars, numTargetChars);	// Count the number of char occurences for that category and update the count variable
-		printf("%s %d\n", categories[i].name, categories[i].count);	// Print results to console
-	}
-*/
-	// How to get to the struct's members?
-	for (List c=categories; c; c=cdr(c)) {
-		int numTargetChars = getArrayLength(c->targetChars);
-		c->count = countOccurences(input, inputLen, c->targetChars, numTargetChars);	// Count the number of char occurences for that category and update the count variable
-		printf("%s %d\n", c->name, c->count);	// Print results to console
+	for (List c=categories; c; c=cdr(c)) {	// For each character category in the list, call the countOccurences function, which searches for matches between the input letters and targetChars
+		ChrCat currentCat = car(c);
+		int numTargetChars = getArrayLength(currentCat->targetChars);
+		currentCat->count = countOccurences(input, inputLen, currentCat->targetChars, numTargetChars);	// Count the number of char occurences for that category and update the count variable
+		printf("%s %d\n", currentCat->name, currentCat->count);	// Print results to console
   	}
 }
 
@@ -137,22 +143,29 @@ extern void ccc(char* input, ssize_t inputLen) {
  * @param i an integer to base the recursion off of. Must be 0 in the toString call
  
 static char* toString(int i) {
-	if(i == numCats) return strdup("");	// Base case: recursion reaches the end of the categories array
+	// array version
+	if(i==numCats) return strdup("");	// Base case: recursion reaches the end of the categories array
 	
 	char* s;
 	char* ts = toString(i+1);
 
-	asprintf(&s, "<%s %d> %s", categories[i].name, categories[i].count, ts);
+	asprintf(&s, "<%s %d> %s", categories[i]->name, categories[i].count, ts);
 	free(ts);
 	return s;
+	
+	// list version
+	for(List c=categories; c; c=cdr(c)) {	// For each character category in the list, call the countOccurences function, which searches for matches between the input letters and targetChars
+		ChrCat currentCat = car(c);
+
+  	}
 }
 
 
 extern char* categoriesToString() {
 	return toString(0);
 }
-
-
-extern void freeCats() { free(categories); }
 */
+
+
+extern void freeCats() { freedata(categories); }
 
