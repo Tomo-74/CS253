@@ -4,12 +4,6 @@
 /////////////////
 /// Functions ///
 /////////////////
-/**
- * Calculates and returns the length of a char array.
- *
- * @param array a char array to find the length of
- * @return length the length of the array
- */
 extern int getArrayLength(char* array) {
 	int length = 0;
 	for(char* i = array; *i != '\0'; i++) {	// Loop until the end of the array is reached

@@ -3,6 +3,7 @@
 
 #include "chrcat.h"
 
+typedef void* ChrCats;
 
 /**
  * Constructs a new node that contains a user-defined character category
@@ -11,7 +12,7 @@
  * @param name an array of characters representing the name of a category
  * @param targetChars an array of characters representing the characters that will be searched for in the user's input
  */
-extern void addCat(char* name, char* targetChars);
+extern List addCat(ChrCats this, char* name, char* targetChars);
 
 
 /**
@@ -20,19 +21,19 @@ extern void addCat(char* name, char* targetChars);
  * @param input the string to search through
  * @param inputLen the length of the string
  */
-extern void ccc(char* input, ssize_t len);
+extern void ccc(ChrCats this, char* input, ssize_t len);
 
 
 /**
  * Prints a string representation of the category names and counts
  */
-extern void catsToString();
+extern void catsToString(ChrCats this);
 
 
 /**
  * Calls free() on the categories array, clearing the
  * memory allocated by calls to realloc during runtime.
  */
-extern void freeCats();
+extern void freeCats(ChrCats this);
 
 #endif

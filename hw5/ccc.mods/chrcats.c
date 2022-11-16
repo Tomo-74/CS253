@@ -1,23 +1,22 @@
 #include "chrcats.h"
 
-static List categories=0;
 static int numCats=0;	// The number of character categories; the length of the list
 
 
-extern void addCat(char* name, char* targetChars) {
+extern List addCat(ChrCats this, char* name, char* targetChars) {
 	numCats++;
-	categories = cons(newCat(name, targetChars), categories);	// Construct a node
+	return cons(newCat(name, targetChars), this);	// Construct and return a new node
 }
 
 
-extern void ccc(char* input, ssize_t inputLen) {	
+extern void ccc(ChrCats this, char* input, ssize_t inputLen) {	
 	if(!numCats) ERROR("No character categories supplied");
 
-	for(List c=categories; c; c=cdr(c)) {	// For each character category in the list, call the countOccurences function, which searches for matches between the input letters and targetChars
-		ChrCat currentCat = car(c);
-		int numTargetChars = getArrayLength(currentCat->targetChars);
-		currentCat->count = countOccurences(input, inputLen, currentCat->targetChars, numTargetChars);	// Count the number of char occurences for that category and update the count variable
-		printf("%s %d\n", currentCat->name, currentCat->count);	// Print results to console
+	for(List c=this; c; c=cdr(c)) {	// For each character category in the list, call the countOccurences function, which searches for matches between the input letters and targetChars
+		ChrCat curCat = car(c);
+		int numTargetChars = getArrayLength(curCat->targetChars);
+		curCat->count = countOccurences(input, inputLen, curCat->targetChars, numTargetChars);	// Count the number of char occurences for that category and update the count variable
+		printf("%s %d\n", curCat->name, curCat->count);	// Print results to console
   	}
 	printf("\n");
 }
@@ -28,13 +27,14 @@ extern void ccc(char* input, ssize_t inputLen) {
  *
  * @param i an integer to base the recursion off of. Must be 0 in the toString call
  */
-extern void catsToString() {
-	for(List c=categories; c; c=cdr(c)) {	// For each character category in the list, call the countOccurences function, which searches for matches between the input letters and targetChars
-		ChrCat currentCat = car(c);
-		printf("<%s %d>\n", currentCat->name, currentCat->count);
+extern void catsToString(ChrCats this) {
+	for(List c=this; c; c=cdr(c)) {	// For each character category in the list, call the countOccurences function, which searches for matches between the input letters and targetChars
+		ChrCat curCat = car(c);
+		printf("<%s %d>\n", curCat->name, curCat->count);
   	}
+	printf("\n");
 }
 
 
-extern void freeCats() { freedata(categories); }
+extern void freeCats(ChrCats this) { freedata(this); }
 
