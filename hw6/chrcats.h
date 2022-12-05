@@ -5,6 +5,7 @@
 
 typedef void* ChrCats;
 
+
 /**
  * Constructs a new node that contains a user-defined character category
  * and adds it to a singly-linked list of all the categories.

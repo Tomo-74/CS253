@@ -5,7 +5,7 @@ HW5
 *****************************
  Compile & run instructions
 *****************************
-	1. Navigate to the directory where the program is stored ("~/.../hw5").
+	1. Navigate to the directory where the program is stored ("~/.../hw6").
 	2. Compile the program by running the "make" command. This creates an object file named "ccc" by default. 
 	3. Run the object file by typing its name ("ccc" by default) followed by an even number of "name/target characters" pairs (see example below).
 	5. Upon running, the program immediately takes in user input. This process loops indefinitely. To end the program, type Ctrl+d.

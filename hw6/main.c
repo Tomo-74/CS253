@@ -1,4 +1,15 @@
 #include "chrcats.h"
+#include <fcntl.h>
+
+char* program;
+
+/**
+ * Prints the usage message for the character category count program and exits with an error signal. * 
+ */
+static void usage() {
+  fprintf(stderr, "%s: hw6 <INPUT_FILE> <OUTPUT_FILE> { <CATEGORY_NAME> <CHARACTERS> ... }\n", program);
+  exit(1);
+}
 
 
 /**
@@ -6,11 +17,28 @@
  * occurrences of character category elements in the input
  */
 int main(int argc, char* argv[]) {
-	if((argc - 1) % 2 != 0) {	// If the user input an odd number of name/category pairs
-		ERROR("Error: provided program with an odd number of name/category pairs");
+	program = argv[0];
+
+	// Usage message and error handling
+	if(argc < 3) {
+		usage();
+	} else if((argc - 3) % 2 != 0) {	// If the user input an odd number of category/characters pairs
+		ERROR("Error: provided program with an odd number of category/characters pairs");
 		return 0;
 	}
 	
+	// Instance variables
+	char* inFile = argv[1];
+	char* outFile = argv[2];
+	int inFD;
+	int outFD;
+
+	// Setting file descriptors
+	if(inFile == "-") inFD = fileno(stdin);
+	else inFD = open(argv[1], O_RDONLY);
+	if(outFile == "-") outFD = fileno(stdout);
+	else outFD = open(argv[2], O_WRONLY);	
+
 	ChrCats ccs1=0;
 	ChrCats ccs2=0;
 
