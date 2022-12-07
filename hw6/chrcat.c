@@ -40,11 +40,11 @@ extern ChrCat newCat(char* name, char* targetChars) {
 
 extern int countOccurences(char* input, ssize_t inputLen, char* targetChars, int numTargetChars) {
 	int count = 0;
-	int foundMatch = 0; // Boolean
+	int foundMatch = 0;
 
 	for(int i = 0; i < inputLen-1; i++) {	// For each char in the user's input line (-1 to account for the newline char added by getline)
 		for(int j = 0; j < numTargetChars; j++) {	// For each targetChar
-			/* Case: capitalization folding ^ */
+			/* Capitalization folding ^ */
 			if(targetChars[0] == '^' && isAlpha(input[i])) {	// If the current targetChar is a carrot and the current input char is alphabetic
 				for(int k = 1; k < numTargetChars; k++) {
 					if(input[i] == targetChars[k] || input[i] == targetChars[k]-32 || input[i] == targetChars[k]+32) {	// If the input char and the target char are equal regardless of case
@@ -55,7 +55,7 @@ extern int countOccurences(char* input, ssize_t inputLen, char* targetChars, int
 				}
 			}
 			
-			/* Case: char range - */
+			/* Char range - */
 			else if(targetChars[j] == '-' && j-1 >= 0 && j+1 <= numTargetChars) {	// Else if the current targetChar is a hyphen that is not located at the front or end of targetChars
 				char startChar = targetChars[j-1];
 				char endChar = targetChars[j+1];
@@ -69,15 +69,14 @@ extern int countOccurences(char* input, ssize_t inputLen, char* targetChars, int
 				}
 			}
 			
-			/* Default case: no special characters */
+			/* No special characters */
 			else if(input[i] == targetChars[j]) {
 				count++;
 				break;
 			}
 			
-			if(foundMatch) { foundMatch = 0; break; }	// Boolean flag used to prevent the j for-loop from continuing to loop after a character match has already been found on line 110
+			if(foundMatch) { foundMatch = 0; break; }	// Boolean flag used to prevent the j for-loop from continuing to loop after a character match has already been found
 		}
 	}
 	return count;
 }
-

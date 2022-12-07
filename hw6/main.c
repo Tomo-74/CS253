@@ -28,23 +28,22 @@ int main(int argc, char* argv[]) {
 		ERROR("User provided program with an odd number of category/characters pairs");
 	}
 	
-	// Instance variables
-	char* inFile = argv[1];
+	
+	char* inFile = argv[1];		// File names
 	char* outFile = argv[2];
-//	char* hyphen = "-";
-	int ifd;
+	int ifd;					// File descriptors
 	int ofd;
 
 	// Set file descriptors
 	if(!strcmp(inFile, "-")) { ifd = fileno(stdin); }	// Case: user wants to read from stdin
-	else {							// Case: user wants to read from provided file
+	else {												// Case: user wants to read from provided file
 		ifd = open(argv[1], O_RDONLY);
 		if(ifd == -1) { usage(); ERROR("Failed to open input file: %s", inFile); }
 	}
 	
 	if(!strcmp(outFile, "-")) { ofd = fileno(stdout); } // Case: user wants to write to stdout
-	else {							// Case: user wants to write to provided file
-		ofd = open(argv[2], O_WRONLY | O_CREAT, 00200);	// 00200: user write permission
+	else {												// Case: user wants to write to provided file
+		ofd = open(argv[2], O_WRONLY | O_CREAT, 00200);	// 00200: user write-only permission
 		if(ofd == -1) { usage(); ERROR("Failed to open output file: %s", outFile); }
 	}
 
@@ -54,14 +53,13 @@ int main(int argc, char* argv[]) {
 	char buf[BUF_SIZE+1];	
 	ssize_t bytes=0;
 	while(1) {
-		bytes = read(ifd, buf, BUF_SIZE);
-		if(bytes < 100) break;	// EOF
+		bytes = read(ifd, buf, BUF_SIZE);	// Read from input file
+		if(bytes<100) break;	// Break at EOF
 	}
-
 	buf[BUF_SIZE+1]='\0';
 	printf("%s\n", buf);
 	
-/*
+
 	ChrCats ccs1=0;
 	ChrCats ccs2=0;
 
@@ -71,27 +69,19 @@ int main(int argc, char* argv[]) {
 	ccs1=addCat(ccs1, "letters", "^abcdefghijklmnopqrstuvwxyz");
 
 	// Add user-defined categories
-	for(int i = 1; i <= argc-1; i+=2) ccs2=addCat(ccs2, argv[i], argv[i+1]);
+	for(int i = 3; i <= argc-1; i+=2) ccs2=addCat(ccs2, argv[i], argv[i+1]);
 
-	// User input variables	
-	char* input = 0;
-	size_t inputSize = 0;	
 
-	// Get user input from command line
-	while(1) {
-		ssize_t inputLen = getline(&input, &inputSize, stdin);	// getline() adds \0 to the end of the input, so inputLen is +1
-		if(inputLen < 0) break;	
+	// Call the character counting functions
+	ccc(ccs1, buf, strlen(buf));
+	printf("%s", catsToString(ccs1, 0));
+	// result2 = ccc(ccs2, buf, strlen(buf));
+	// atsToString(ccs2);
 
-		ccc(ccs1, input, inputLen);
-		catsToString(ccs1);
+	// printf("%s", result1.buf);
 
-		ccc(ccs2, input,inputLen);	
-		catsToString(ccs2);
-	}
 	freeCats(ccs1);
 	freeCats(ccs2);
-	free(input);
-*/
 	return 0;
 }
 
