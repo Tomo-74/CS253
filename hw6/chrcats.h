@@ -12,12 +12,13 @@ typedef void* ChrCats;
  *
  * @param name an array of characters representing the name of a category
  * @param targetChars an array of characters representing the characters that will be searched for in the user's input
+ * @return the newly constructed node
  */
 extern List addCat(ChrCats this, char* name, char* targetChars);
 
 
 /**
- * Finds the number of times the character categories occur in a string input.
+ * Finds the number of times the character categories' target characters occur in a given string input.
  *
  * @param input the string to search through
  * @param inputLen the length of the string
@@ -28,14 +29,15 @@ extern void ccc(ChrCats this, char* input, ssize_t len);
 /**
  * Returns a string representation of the character category search results.
  *
- * @param this a ChrCats list containing character categories
- * @param i an integer to start the recursion. Must be 0
+ * @param this a list of character category structs
+ * @param i an integer (must be 0) to start the recursion
+ * @return a string representation of the character category count results
  */
 extern char* catsToString(ChrCats this);
 
 
 /**
- * Calls free() on the categories array, clearing the memory allocated by calls to realloc during runtime.
+ * Clears memory allocated during runtime.
  */
 extern void freeCats(ChrCats this);
 

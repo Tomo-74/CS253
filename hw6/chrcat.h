@@ -2,6 +2,7 @@
 #define CHRCAT_H
 
 #include <stdio.h>
+#include <string.h>	// strcmp(), strlen(), strdup()
 #include "error.h"
 #include "list.h"
 
@@ -16,7 +17,7 @@ typedef struct {
  * Calculates and returns the length of a char array.
  *
  * @param array a char array to find the length of
- * @return length the length of the array
+ * @return the length of the provided array
  */
 extern int getArrayLength(char* array);
 
@@ -28,6 +29,7 @@ extern int getArrayLength(char* array);
  *
  * @param name an array of characters representing the name of a category
  * @param targetChars an array of characters representing the characters that will be searched for in the user's input
+ * @return a pointer to the location of the newly constructed ChrCat
  */
 extern ChrCat newCat(char* name, char* targetChars);
 

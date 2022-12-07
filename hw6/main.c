@@ -1,7 +1,6 @@
 #include "chrcats.h"
 #include <fcntl.h>	// open()
 #include <unistd.h>	// read()
-#include <string.h>	// strcmp(), strlen()
 
 char* prog;
 
@@ -56,8 +55,8 @@ int main(int argc, char* argv[]) {
 		bytes = read(ifd, buf, BUF_SIZE);	// Read from input file
 		if(bytes<100) break;	// Break at EOF
 	}
-	buf[BUF_SIZE+1]='\0';
-	printf("%s\n", buf);
+//	buf[BUF_SIZE+1]='\0';
+//	printf("%s\n", buf);
 
 	// Add default categories
 	ChrCats ccs1=0;
@@ -69,11 +68,12 @@ int main(int argc, char* argv[]) {
 	// Add user-defined categories
 	for(int i = 3; i <= argc-1; i+=2) ccs2=addCat(ccs2, argv[i], argv[i+1]);
 
-	// Count characters
+	// Count and output characters
 	ccc(ccs1, buf, strlen(buf));
 	printf("%s", catsToString(ccs1));
-	// ccc(ccs2, buf, strlen(buf));
-	// catsToString(ccs2);
+	ccc(ccs2, buf, strlen(buf));
+	printf("%s", catsToString(ccs2));
+	printf("\n\n");
 
 	freeCats(ccs1);
 	freeCats(ccs2);

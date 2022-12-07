@@ -1,5 +1,4 @@
 #include "chrcats.h"
-#include <string.h>	// strdup()
 
 static int numCats=0;	// The number of character categories; the length of the list
 
@@ -27,7 +26,7 @@ static char* toString(ChrCats this, int i) {
 		char* s;
 		char* ts = toString(cdr(c), i+1);
 		ChrCat curCat=car(c);
-		asprintf(&s, "<%s %d> %s\n", curCat->name, curCat->count, ts);
+		asprintf(&s, "<%s %d> %s", curCat->name, curCat->count, ts);
 		free(ts);
 		return s;
 	}
