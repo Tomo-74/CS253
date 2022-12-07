@@ -26,9 +26,9 @@ extern void ccc(ChrCats this, char* input, ssize_t len);
 
 
 /**
- * Prints a string representation of the category names and counts
+ * Returns a string representation of the results from counting characters
  */
-extern char* catsToString(ChrCats this, int i);
+extern char* catsToString(ChrCats this);
 
 
 /**

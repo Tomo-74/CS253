@@ -51,19 +51,17 @@ int main(int argc, char* argv[]) {
 	// Read from input file
 	enum { BUF_SIZE=100 };
 	char buf[BUF_SIZE+1];	
-	ssize_t bytes=0;
+	ssize_t bytes;
 	while(1) {
 		bytes = read(ifd, buf, BUF_SIZE);	// Read from input file
 		if(bytes<100) break;	// Break at EOF
 	}
 	buf[BUF_SIZE+1]='\0';
 	printf("%s\n", buf);
-	
-
-	ChrCats ccs1=0;
-	ChrCats ccs2=0;
 
 	// Add default categories
+	ChrCats ccs1=0;
+	ChrCats ccs2=0;
 	ccs1=addCat(ccs1, "lower vowels", "aeiou");
 	ccs1=addCat(ccs1, "lower consonants", "bcdfghjklmnpqrstvwxyz");
 	ccs1=addCat(ccs1, "letters", "^abcdefghijklmnopqrstuvwxyz");
@@ -71,14 +69,11 @@ int main(int argc, char* argv[]) {
 	// Add user-defined categories
 	for(int i = 3; i <= argc-1; i+=2) ccs2=addCat(ccs2, argv[i], argv[i+1]);
 
-
-	// Call the character counting functions
+	// Count characters
 	ccc(ccs1, buf, strlen(buf));
-	printf("%s", catsToString(ccs1, 0));
-	// result2 = ccc(ccs2, buf, strlen(buf));
-	// atsToString(ccs2);
-
-	// printf("%s", result1.buf);
+	printf("%s", catsToString(ccs1));
+	// ccc(ccs2, buf, strlen(buf));
+	// catsToString(ccs2);
 
 	freeCats(ccs1);
 	freeCats(ccs2);
