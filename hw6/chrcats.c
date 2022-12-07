@@ -18,41 +18,24 @@ extern void ccc(ChrCats this, char* input, ssize_t inputLen) {
   	}
 }
 
-/*
-extern char* catsToString(ChrCats this, int i) {
-        char* ts;
+
+static char* toString(ChrCats this, int i) {	
 	List c=this;
 
-        if(i==numCats) { ts=""; return ts; }        // Base case: recursion reaches the end of the categories array
-        else {
+	if(!c) return strdup("");	// Base case
+	else {
+		char* s;
+		char* ts = toString(cdr(c), i+1);
 		ChrCat curCat=car(c);
-		asprintf(&ts, "<%s %d> %s", curCat[i].name, curCat[i].count, catsToString(cdr(c), i+1));
-		return ts;
-        }
-}
-*/
-
-/**
- * Returns a string representation of the character category search results
- * @param i an integer to base the recursion off of. Must be 0 in the toString call
- */
-static char* toString(ChrCats this, int i) {
-	if(i == numCats) return strdup("");	// Base case: recursion reaches the end of the categories array
-	
-	char* s;
-	List c=this;
-	char* ts = toString(cdr(c), i+1);
-	ChrCat curCat=car(c);
-
-	asprintf(&s, "<%s %d> %s", curCat[i].name, curCat[i].count, ts);
-	free(ts);
-	return s;
+		asprintf(&s, "<%s %d> %s\n", curCat->name, curCat->count, ts);
+		free(ts);
+		return s;
+	}
 }
 
 
 extern char* catsToString(ChrCats this) {
 	return toString(this, 0);
 }
-
 
 extern void freeCats(ChrCats this) { freedata(this); }
