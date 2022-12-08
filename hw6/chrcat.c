@@ -42,7 +42,7 @@ extern int countOccurences(char* input, ssize_t inputLen, char* targetChars, int
 	int count = 0;
 	int foundMatch = 0;
 
-	for(int i = 0; i < inputLen-1; i++) {	// For each char in the user's input line (-1 to account for the newline char added by getline)
+	for(int i = 0; i < inputLen-1; i++) {	// For each char in the user's input line (-1 to account for \0 added by getline)
 		for(int j = 0; j < numTargetChars; j++) {	// For each targetChar
 			/* Capitalization folding ^ */
 			if(targetChars[0] == '^' && isAlpha(input[i])) {	// If the current targetChar is a carrot and the current input char is alphabetic
