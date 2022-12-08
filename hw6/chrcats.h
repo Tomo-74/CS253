@@ -7,6 +7,12 @@ typedef void* ChrCats;
 
 
 /**
+ * Getter method for the length of the toString 
+ * @return the length of the toString description
+ */
+extern int getToStringLength();
+
+/**
  * Constructs a new node that contains a user-defined character category
  * and adds it to a singly-linked list of all the categories.
  *

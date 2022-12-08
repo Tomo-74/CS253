@@ -1,6 +1,21 @@
 #include "chrcats.h"
 
 static int numCats=0;	// The number of character categories; the length of the list
+static int toStringLen=0;	// The length of the returned string description
+
+/**
+ * Return the length of a given integer
+ * @param num a non-negative integer
+ * @return the string length of the integer
+ */
+static int getLengthOfInt(int num){
+  int len=1;
+  while(num>9){ len++; num/=10; }
+  return len;
+}
+
+
+extern int getToStringLength() { return toStringLen; }
 
 
 extern List addCat(ChrCats this, char* name, char* targetChars) {
@@ -26,6 +41,9 @@ static char* toString(ChrCats this, int i) {
 		char* s;
 		char* ts = toString(cdr(c), i+1);
 		ChrCat curCat=car(c);
+
+		toStringLen += getArrayLength(curCat->name) + getLengthOfInt(curCat->count) + 3;	// +3 for the < >
+
 		asprintf(&s, "<%s %d> %s", curCat->name, curCat->count, ts);
 		free(ts);
 		return s;
